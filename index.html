@@ -9,11 +9,11 @@
 <script>
 function buscarDados(){
   fetch("https://jsonplaceholder.typicode.com/post")
-    .then(res => res.json())
-    .then(dados => {
+    then(res => res.json())
+    (dados => {
       let lista = document.getElementById("lista")
       lista.innerHTML = dados.map(item => `<li>${item.title}</li>`)
-    })
+    })}
 
 </script>
 
