@@ -1,4 +1,29 @@
 </head>
+
+<style>
+  body {
+    font-family: Arial;
+    padding: 20px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    background: #f2f2f2;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  button {
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+</style>
+
 <body>
 
 <h1>Buscar Dados</h1>
@@ -7,14 +32,38 @@
 <ul id="lista"></ul>
 
 <script>
-function buscarDados(){
-  fetch("https://jsonplaceholder.typicode.com/posts")
-    then(res => res.json())
-    (dados => {
-      let lista = document.getElementById("lista")
-      lista.innerHTML = dados.map(item => `<li>${item.title}</li>`)
-    })}
+async function buscarDados(){
+  let lista = document.getElementById("lista")
 
+if (!lista) {
+  console.error("Elemento #lista não encontrado")
+  return
+}
+
+  try {
+    const resposta = await fetch('https://jsonplaceholder.typicode.com/posts')
+
+    if (!resposta.ok) {
+      throw new Error("Erro na requisição")
+    }
+
+    const dados = await resposta.json()
+
+    if (!dados || dados.length === 0) {
+      lista.innerHTML = "<li>Nenhum dado encontrado</li>"
+      return
+    }
+
+    lista.innerHTML = dados
+  .slice(0, 10)
+  .map(item => `<li>${item.title}</li>`)
+  .join("")
+
+  } catch (erro) {
+    lista.innerHTML = "<li>Erro ao carregar dados</li>"
+    console.error(erro)
+  }
+}
 </script>
 
 </body>
